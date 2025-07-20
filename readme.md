@@ -1,7 +1,11 @@
+## Rate Limiter Package for Go
+
+### Example Usage
+
+```go
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -18,9 +22,11 @@ func main() {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: "localhost:6379",
 	})
+
 	limiter := ratelimiter.NewFixedWindowRateLimiter(redisClient, 5, 60*time.Second)
 	rateLimitedHandler := limiter.MiddleWare()(http.HandlerFunc(defaultHandler))
 	http.Handle("/", rateLimitedHandler)
-	fmt.Println("Server starting on port 3000...")
 	http.ListenAndServe(":3000", nil)
 }
+
+```
